@@ -1,0 +1,28 @@
+{
+  "name": "4score",
+  "version": "1.0.0",
+  "description": "TTL Web-Scorekeeper",
+  "browser": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "node node_modules/browserify/bin/cmd.js src/index.js > dist/index.js",
+    "watch": "while inotifywait -e close_write src/*.js;do npm --silent run bundle;done"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https:github.com/edlandm/4score"
+  },
+  "keywords": [
+    "Trivia",
+    "Time",
+    "Live",
+    "Scorekeeper"
+  ],
+  "author": "Miles Edland",
+  "license": "ISC",
+  "dependencies": {
+    "arare": "^0.1.0",
+    "browserify": "^16.2.3",
+    "require": "^2.4.20"
+  }
+}
