@@ -104,7 +104,27 @@ const actions = {
     addTeam: {
         func: addTeam,
         desc: "add a new team to the bottom of the table"
-    }
+    },
+    addTeams: {
+        func: addTeams,
+        desc: "add teams until <esc> is pressed"
+    },
+    sortByTeamNameDesc: {
+        func: A.partialRight(sortTable, ["sortByTeamName"]),
+        desc: "sort table by names in descending order"
+    },
+    sortByTeamNameAsc: {
+        func: A.partialRight(sortTable, ["sortByTeamName", false]),
+        desc: "sort table by names in ascending order"
+    },
+    sortByScoreDesc: {
+        func: A.partialRight(sortTable, ["sortByScore"]),
+        desc: "sort table by total scores in descending order"
+    },
+    sortByScoreAsc: {
+        func: A.partialRight(sortTable, ["sortByScore", false]),
+        desc: "sort table by total scores in ascending order"
+    },
 }
 
 const keyMap = {
