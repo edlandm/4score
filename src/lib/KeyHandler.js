@@ -127,12 +127,18 @@ const actions = {
     },
 }
 
-const keyMap = {
-    A: "addTeam"
+const dvorak = {
+    "a": "addTeam",
+    "A": "addTeams",
+    ",": "sortByTeamNameDesc",
+    "<": "sortByScoreDesc",
+    ".": "sortByTeamNameAsc",
+    ">": "sortByScoreAsc",
 }
 
 const keyMaps = {
-    default: keyMap
+    default: dvorak,
+    dvorak
 }
 
 const isIgnoreKey = isInArray([ "Shift", "Alt", "Control" ]);
