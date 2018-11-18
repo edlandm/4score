@@ -65,6 +65,11 @@ class Table {
         this.teams.push(team);
         return this;
     }
+
+    isDuplicateTeamName(name) {
+        return this.teams.map(x => x.name.toLowerCase()).includes(name.toLowerCase());
+    }
+    }
 }
 
 module.exports = Table;
