@@ -3,52 +3,83 @@ const Team = require("./Team");
 const util  = require("./util");
 const { id, $, $$, makeEl, makeFrag, isInArray } = util;
 
-const addTeam = (event, table, app) => { // create input for adding new team
-        event.preventDefault();
-        let newTeamInput = id("newTeam");
-        if(newTeamInput) { // if an input already exists, focus it
-            newTeamInput.focus();
-            return;
-        }
+// addTeam :: Event -> Table -> HTML -> bool -> void
+// create input for adding new team
+const addTeam = (event, table, app, multiple=false) => {
+    let newTeamContainer = id("newTeam");
+    if(newTeamContainer) { // if an input already exists, focus it
+        newTeamContainer.querySelector("input").focus();
+        return;
+    }
 
-        // remove "No Teams" message
-        if(!table.teams.length) $("header~p").outerHTML = "";
+    // remove "No Teams" message
+    if(!table.teams.length) {
+        $("#app p").outerHTML = "";
+    }
 
-        // make input
-        const inp = makeEl("input");
-        inp.setAttribute("placeholder", "Enter team-name");
-        inp.setAttribute("id", "newTeam")
-        app.appendChild(inp);
+    // make input and focus it
+    newTeamContainer = app.appendChild(makeEl("div", { id: "newTeam" }))
+    newTeamInput     = newTeamContainer
+        .appendChild(makeEl("input", { placeholder: "Enter team-name" }));
+    newTeamInput.focus();
 
-        // focus input
-        newTeamInput = id("newTeam");
-        newTeamInput.focus();
+    // listen for user to either submit (Enter) or exit (Escape) the input
+    newTeamInput.addEventListener("keydown", (keydown) => {
+        const key = keydown.key
+        const tableEl = $("table");
 
-        // listen for user to either submit (Enter) or exit (Escape) the input
-        newTeamInput.addEventListener("keydown", (keydown) => {
-            const key = keydown.key
-            const tableEl = $("table");
+        switch(key) {
+            case "Enter":
+                // abort if input is empty
+                if(!newTeamInput.value || !newTeamInput.value.trim()) return;
 
-            const isKeyWeCareAbout = isInArray([ "Enter", "Escape" ]);
-            if(!isKeyWeCareAbout(key)) return // abort
-
-            // continue
-            // remove input
-            newTeamInput.parentNode.removeChild(newTeamInput);
-
-            if(key === "Enter") {
-                const team = new Team(newTeamInput.value);
-
-                table.addTeam(team);
-                if(tableEl) {
-                    tableEl.appendChild(table.makeRow(team));
+                // display error and abort if entry is duplicate
+                if(table.isDuplicateTeamName(newTeamInput.value.trim())) {
+                    if(!newTeamContainer.querySelector("p.error")) {
+                        const errorMessage = makeEl("p", { "class": "error" });
+                        errorMessage.innerHTML = "That team already exists";
+                        newTeamInput
+                            .insertAdjacentHTML("afterend", errorMessage.outerHTML);
+                    }
                     return;
                 }
-                app.append(table.makeTable());
-            } else if(key === "Escape") {
-                if(!tableEl) app.appendChild(table.makeTable());
-            }
-        });
+
+                // remove input
+                app.removeChild(newTeamContainer);
+
+                // display header
+                if(!table.teams.length) {
+                    app.appendChild(table.makeHeader());
+                }
+
+                const team = new Team(newTeamInput.value.trim());
+                table.addTeam(team);
+
+                if(tableEl) {
+                    tableEl.appendChild(table.makeRow(team));
+                } else {
+                    app.appendChild(table.makeTable());
+                }
+
+                if(multiple) {
+                    addTeam(event, table, app, multiple);
+                }
+                break;
+            case "Escape":
+                // remove input
+                app.removeChild(newTeamContainer);
+                if(!tableEl) {
+                    if(table.teams.length) {
+                        app.appendChild(table.makeTable());
+                    } else {
+                        app.innerHTML = table.emptyMessage().outerHTML;
+                    }
+                }
+                break;
+            default:
+                return;
+        }
+    });
 }
 
 const actions = {
