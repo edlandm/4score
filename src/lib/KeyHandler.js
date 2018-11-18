@@ -85,6 +85,21 @@ const addTeam = (event, table, app, multiple=false) => {
 // addTeam :: Event -> Table -> HTML -> -> void
 // add teams until <esc> is pressed
 const addTeams = (event, table, app) => addTeam(event, table, app, true);
+
+// sortTable :: Event -> Table -> HTML -> string -> bool -> void
+// sort Table.teams by a given Table sort method and re-render table
+const sortTable = (event, table, app, sortMethod, desc=true) => {
+    if(!table.teams.length || table.teams.length <= 1) return;
+
+    // sort table in-place
+    table[sortMethod](desc);
+
+    // re-render table
+    const tableEl = app.querySelector("table")
+    app.removeChild(tableEl);
+    app.appendChild(table.makeTable());
+}
+
 const actions = {
     addTeam: {
         func: addTeam,
