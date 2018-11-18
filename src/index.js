@@ -3,13 +3,12 @@ const Table = require("./lib/Table");
 const Team  = require("./lib/Team");
 const { KeyHandler, keyMaps } = require("./lib/KeyHandler")
 const util  = require("./lib/util");
-const { id, $, $$, makeEl, makeFrag, isInArray } = util;
 
-const app = id("app");
+const app = util.id("app");
 
 const table = new Table()
-app.appendChild(table.makeHeader());
-app.appendChild(table.makeTable());
+
+app.appendChild(table.emptyMessage());
 
 // event listeners
 const keyHandler = new KeyHandler(keyMaps.default);
