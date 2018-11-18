@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "node node_modules/browserify/bin/cmd.js src/index.js > dist/index.js",
-    "watch": "while inotifywait -e close_write src/*.js;do npm --silent run bundle;done"
+    "watch": "while inotifywait -e close_write src/**/*.js src/index.js;do npm --silent run bundle;done"
   },
   "repository": {
     "type": "git",
