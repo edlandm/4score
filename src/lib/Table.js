@@ -69,6 +69,21 @@ class Table {
     isDuplicateTeamName(name) {
         return this.teams.map(x => x.name.toLowerCase()).includes(name.toLowerCase());
     }
+
+    sortByTeamName(desc=true) {
+        // sort teams in-place alphabetically by team name
+        this.teams.sort((a, b) => {
+            const comp = a.name.toLowerCase() > b.name.toLowerCase() ? -1 :  1;
+            return desc ? comp : -comp;
+        });
+    }
+
+    sortByScore(desc=true) {
+        // sort teams in-place by total score
+        this.teams.sort((a, b) => {
+            const diff = a - b;
+            return desc ? diff : -diff;
+        });
     }
 }
 
