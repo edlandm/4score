@@ -142,7 +142,7 @@ const keyMaps = {
 }
 
 const isIgnoreKey = isInArray([ "Shift", "Alt", "Control" ]);
-const isTagInput = (tagName) => /[input|textarea|select]/i.test(tagName);
+const isTagInput  = (tagName) => /[input|textarea|select]/i.test(tagName);
 
 class KeyHandler {
     constructor(keyMap) {
@@ -156,10 +156,11 @@ class KeyHandler {
         if(isIgnoreKey(key) || isTagInput(target.tagName)) return;
 
         // if we have an action mapped to this key, do the action, else do nothing
-        const action = actions[this._dict[key]]
-            ? actions[this._dict[key]].func
-            : A.id;
-        action(event, table, app);
+        const action = actions[this._dict[key]];
+        if(action) {
+            event.preventDefault();
+            action.func(event, table, app);
+        }
     }
 }
 
