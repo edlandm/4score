@@ -36,11 +36,8 @@ class Table {
     }
 
     makeTable() {
-        if(!this.teams.length) {
-            const message = makeEl("p");
-            message.innerHTML = "No Teams! Press shift+A to add a new one";
-            return message;
-        }
+        if(!this.teams.length) return;
+
         return this.teams.reduce((table, team) => {
             table.appendChild(this.makeRow(team));
             return table;
@@ -56,6 +53,12 @@ class Table {
                 row.appendChild(this.makeCell(text, "th"));
                 return row;
             }, makeEl("header"));
+    }
+
+    emptyMessage() {
+        const message = makeEl("p");
+        message.innerHTML = "No Teams! Press shift+A to add a new one";
+        return message;
     }
 
     addTeam(team) {
