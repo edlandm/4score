@@ -9,6 +9,10 @@ class Table {
         this.teams = teams;
     }
 
+    get teamNames() {
+        return this.teams.map(x => x.name);
+    }
+
     makeCell(text="", tag="td") {
         const td = makeEl(tag);
         td.innerHTML = text;
