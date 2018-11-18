@@ -82,6 +82,9 @@ const addTeam = (event, table, app, multiple=false) => {
     });
 }
 
+// addTeam :: Event -> Table -> HTML -> -> void
+// add teams until <esc> is pressed
+const addTeams = (event, table, app) => addTeam(event, table, app, true);
 const actions = {
     addTeam: {
         func: addTeam,
